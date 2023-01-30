@@ -4,8 +4,14 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 
 chai.use(chaiHttp);
-
+const usersController = require('../controllers/user')
 const app = require("../app").app;
+
+before((done) => {
+    usersController.registerUser("LuisBravo", "1234");
+    usersController.registerUser("Lucho", "1234");
+    done();
+})
 
 describe("Suite de pruebas auth", () => {
     it("Should return 401 when no jwt token available", (done) => {
@@ -62,3 +68,8 @@ describe("Suite de pruebas auth", () => {
             });
     });
 });
+
+after((done) => {
+    usersController.cleanUpUsers();
+    done();
+})

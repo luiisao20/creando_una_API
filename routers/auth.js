@@ -3,10 +3,6 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 
 const usersController = require('../controllers/user')
-usersController.registerUser("LuisBravo", "1234");
-usersController.registerUser("AnellysCaroline", "aaaa");
-usersController.registerUser("GabyFea", "2345");
-usersController.registerUser("Lucho", "2345");
 
 router.route('/')
     .get((req, res) => {
@@ -25,7 +21,7 @@ router.route('/login')
         }
         // Comprobamos credenciales, si son validas generamos un jwt
         usersController.checkUserCredentials(req.body.user, req.body.password, (err, result) => {
-            if (!result) {
+            if (err || !result) {
                 return res.status(401).json({message: "Invalid credentials"});
             }
             let user = usersController.getUserIdFromUserName(req.body.user);
