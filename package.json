@@ -4,7 +4,7 @@
   "description": "Objetivo: definir una API para gestionar nuestro equipo pokemon.",
   "main": "app.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha */*/*.test.js"
   },
   "author": "",
   "license": "ISC",

@@ -1,15 +1,16 @@
 const express = require("express");
 const bodyParser = require('body-parser');
+const middlewares = require('./middlewares');
 
 // Routes
-const authRoutes = require('./routers/auth').router;
-const teamsRoutes = require('./routers/teams').router;
+const authRoutes = require('./auth/auth.router').router;
+const teamsRoutes = require('./teams/teams.router').router;
 
 const app = express();
-app.use(bodyParser.json()); // Permite leer los datos en formato json de forma correcta
 
 const port = 3000;
 
+middlewares.setupMiddlewares(app);
 app.get("/", (req, res) => {
     // req es la request, la peticion
     // res es la response, la respuesta

@@ -4,7 +4,7 @@ const chaiHttp = require("chai-http");
 
 chai.use(chaiHttp);
 
-const app = require("../app").app;
+const app = require("../../app").app;
 
 describe("Suite de prueba e2e para el curso", () => {
     it("Should return Hello World!", (done) =>{
