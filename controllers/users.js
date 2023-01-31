@@ -29,7 +29,7 @@ const getUserIdFromUserName = (userName) => {
         if (userDatabase[user].userName == userName) {
             let userData = userDatabase[user];
             userData.userId = user;
-            return userDatabase[user];
+            return userData;
         }
     }
 }

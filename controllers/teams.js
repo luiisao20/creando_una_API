@@ -15,6 +15,7 @@ const addPokemon = (userId, pokemon) => {
 }
 
 const getTeamOfUser = (userId) => {
+    console.log('TEAMS CONTROLER TEAMSDATABASE', teamsDatabase[userId])
     return teamsDatabase[userId]
 }
 

@@ -2,7 +2,7 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 
 chai.use(chaiHttp);
-const usersController = require('../controllers/user')
+const usersController = require('../controllers/users')
 const teamsController = require('../controllers/teams')
 
 const app = require('../app').app;
@@ -47,7 +47,7 @@ describe('Suite de pruebas teams', () => {
                                 chai.assert.equal(res.body.team[0].name, team[0].name);
                                 chai.assert.equal(res.body.team[1].name, team[1].name);
                                 done();
-                        });
+                            });
                     });
             });
     });
@@ -72,14 +72,13 @@ describe('Suite de pruebas teams', () => {
                             .get('/teams')
                             .set('Authorization', `JWT ${token}`)
                             .end((err, res) => {
-                                console.log('PRUEBA', res.body)
                                 // tiene equipo con Charizard y Blastoise
                                 // { trainer: 'mastermind', team: [Pokemon]}
                                 chai.assert.equal(res.statusCode, 200);
                                 chai.assert.equal(res.body.trainer, 'Lucho');
-                                chai.assert.equal(res.body.team.length, 3);
-                                chai.assert.equal(res.body.team[2].name, pokemonName);
-                                chai.assert.equal(res.body.team[1].pokedexNumber, 1);
+                                chai.assert.equal(res.body.team.length, 1);
+                                chai.assert.equal(res.body.team[0].name, pokemonName);
+                                chai.assert.equal(res.body.team[0].pokedexNumber, 1);
                                 done();
                             });
                     });

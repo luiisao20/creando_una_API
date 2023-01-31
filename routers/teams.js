@@ -5,7 +5,7 @@ require('../auth')(passport);
 const axios = require('axios').default;
 
 const teamsController = require('../controllers/teams');
-const { getUser } = require('../controllers/user');
+const { getUser } = require('../controllers/users');
 
 router.route('/')
     .get(passport.authenticate("jwt", {session:false}), 
@@ -15,7 +15,7 @@ router.route('/')
                     trainer: user.userName,
                     team: teamsController.getTeamOfUser(req.user.userId)
                 })
-                console.log('AAAAAAAAAAAAAAAAAAAA', teamsController.getTeamOfUser(req.user.userId))
+                console.log('TEAMS ROUTERS', teamsController.getTeamOfUser(req.user.userId))
         })
     .put(passport.authenticate('jwt', {session: false}),
         (req, res) => {    
@@ -36,7 +36,7 @@ router.route('/pokemons')
                     pokedexNumber: response.data.id
                 }
                 teamsController.addPokemon(req.user.userId, pokemon);
-                console.log('pokemon', pokemon);
+
                 res.status(201).json(pokemon);
             })
             .catch(function (error) {
@@ -47,7 +47,6 @@ router.route('/pokemons')
             .then(function () {
                 // always executed
             });
-        res.status(200).send("Hello World!");
     })
 
 router.route('/pokemons:pokeid')
@@ -55,4 +54,4 @@ router.route('/pokemons:pokeid')
         res.status(200).send("Hello World!");
     })
 
-exports.router = router;
+    exports.router = router;
