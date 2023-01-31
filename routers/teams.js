@@ -49,21 +49,16 @@ router.route('/pokemons')
             });
     })
 
-router.route('/pokemons:pokeid')
+router.route('/pokemons/:pokeid')
     .delete(passport.authenticate("jwt", {session:false}),
     (req, res) => {
-        let pokeId = req.body.pokemonId;
+        let pokeId = req.params.pokeid;
         
-        if (pokeId < teamsController.getTeamOfUser(req.user.userId).length) {
-            console.log("Deleting the pokemon with id = ", pokeId)
-            teamsController.deletePokemon(req.user.userId, pokeId);
-            res.status(201).json(pokeId);
-        } else {(function (error) {
-            // handle error
-            console.log(error);
-            res.status(400).json({message: error});
-        });
-    };
-    })
+        console.log("Deleting the pokemon with id = ", pokeId)
+        
+        teamsController.deletePokemon(req.user.userId, pokeId);
+        res.status(201).json(pokeId);
+        }
+    )
 
 exports.router = router;

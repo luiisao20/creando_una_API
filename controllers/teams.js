@@ -22,8 +22,10 @@ const setTeam = (userId, team) => {
     teamsDatabase[userId] = team;
 }
 
-const deletePokemon = (userId, pokemonId) => {
-    teamsDatabase[userId].splice(pokemonId, 1);
+const deletePokemon = (userId, index) => {
+    if (teamsDatabase[userId][index]) {
+        teamsDatabase[userId].splice(index, 1);
+    }
 }
 
 exports.bootstrapTeam = bootstrapTeam;

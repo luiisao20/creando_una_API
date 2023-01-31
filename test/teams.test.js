@@ -93,7 +93,6 @@ describe('Suite de pruebas teams', () => {
             {name: 'Bulbasaur'}, 
             {name: 'Pikachu'}
         ];
-        let pokemonId = 3;
         chai.request(app)
             .post('/auth/login')
             .set('content-type', 'application/json')
@@ -110,8 +109,7 @@ describe('Suite de pruebas teams', () => {
                     .end((err, res) => {
                         chai.request(app)
                             // DESDE AQUI HAY QUE IMPLEMENTAR EL TEST DEL DELETE
-                            .delete('/teams/pokemons:pokeid')
-                            .send({pokemonId: pokemonId})
+                            .delete('/teams/pokemons/1')
                             .set('Authorization', `JWT ${token}`)
                             .end((err, res) => {
                                 chai.request(app)
@@ -124,7 +122,7 @@ describe('Suite de pruebas teams', () => {
                                         // { trainer: 'mastermind', team: [Pokemon]}
                                         chai.assert.equal(res.statusCode, 200);
                                         chai.assert.equal(res.body.trainer, 'Lucho');
-                                        chai.assert.equal(res.body.team.length, 3);
+                                        chai.assert.equal(res.body.team.length, team.length - 1);
                                         done();
                                     });
                             });
