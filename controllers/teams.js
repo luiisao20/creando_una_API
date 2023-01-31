@@ -15,7 +15,6 @@ const addPokemon = (userId, pokemon) => {
 }
 
 const getTeamOfUser = (userId) => {
-    console.log('TEAMS CONTROLER TEAMSDATABASE', teamsDatabase[userId])
     return teamsDatabase[userId]
 }
 
@@ -23,8 +22,13 @@ const setTeam = (userId, team) => {
     teamsDatabase[userId] = team;
 }
 
+const deletePokemon = (userId, pokemonId) => {
+    teamsDatabase[userId].splice(pokemonId, 1);
+}
+
 exports.bootstrapTeam = bootstrapTeam;
 exports.addPokemon = addPokemon;
 exports.setTeam = setTeam;
 exports.getTeamOfUser = getTeamOfUser;
 exports.cleanUpTeam = cleanUpTeam;
+exports.deletePokemon = deletePokemon;

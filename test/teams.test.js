@@ -84,6 +84,53 @@ describe('Suite de pruebas teams', () => {
                     });
             });
     });
+
+    it('should return the length of the team - 1', (done) => {
+        // Cuando la llamada no tiene correctamente la llave
+        let team = [
+            {name: 'Charizard'}, 
+            {name: 'Blastoise'}, 
+            {name: 'Bulbasaur'}, 
+            {name: 'Pikachu'}
+        ];
+        let pokemonId = 3;
+        chai.request(app)
+            .post('/auth/login')
+            .set('content-type', 'application/json')
+            .send({user: 'Lucho', password: '1234'})
+            .end((err, res) => {
+                console.log("ESTE ES EL ACTUAL NUMERO DE POKEMONS ", team.length);
+                let token = res.body.token;
+                //Expect valid login
+                chai.assert.equal(res.statusCode, 200);
+                chai.request(app)
+                    .put('/teams')
+                    .send({team: team})
+                    .set('Authorization', `JWT ${token}`)
+                    .end((err, res) => {
+                        chai.request(app)
+                            // DESDE AQUI HAY QUE IMPLEMENTAR EL TEST DEL DELETE
+                            .delete('/teams/pokemons:pokeid')
+                            .send({pokemonId: pokemonId})
+                            .set('Authorization', `JWT ${token}`)
+                            .end((err, res) => {
+                                chai.request(app)
+                                    .get('/teams')
+                                    .set('Authorization', `JWT ${token}`)
+                                    .end((err, res) => {
+                                        console.log(res.body.team);
+                                        console.log("ESTE ES EL NUEVO NUMERO DE POKEMONS ", res.body.team.length);
+                                        // tiene equipo con Charizard y Blastoise
+                                        // { trainer: 'mastermind', team: [Pokemon]}
+                                        chai.assert.equal(res.statusCode, 200);
+                                        chai.assert.equal(res.body.trainer, 'Lucho');
+                                        chai.assert.equal(res.body.team.length, 3);
+                                        done();
+                                    });
+                            });
+                    });
+            });
+    });
 });
 
 after((done) => {

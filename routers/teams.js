@@ -15,8 +15,8 @@ router.route('/')
                     trainer: user.userName,
                     team: teamsController.getTeamOfUser(req.user.userId)
                 })
-                console.log('TEAMS ROUTERS', teamsController.getTeamOfUser(req.user.userId))
-        })
+
+            })
     .put(passport.authenticate('jwt', {session: false}),
         (req, res) => {    
         teamsController.setTeam(req.user.userId, req.body.team);
@@ -50,8 +50,20 @@ router.route('/pokemons')
     })
 
 router.route('/pokemons:pokeid')
-    .delete(() => {
-        res.status(200).send("Hello World!");
+    .delete(passport.authenticate("jwt", {session:false}),
+    (req, res) => {
+        let pokeId = req.body.pokemonId;
+        
+        if (pokeId < teamsController.getTeamOfUser(req.user.userId).length) {
+            console.log("Deleting the pokemon with id = ", pokeId)
+            teamsController.deletePokemon(req.user.userId, pokeId);
+            res.status(201).json(pokeId);
+        } else {(function (error) {
+            // handle error
+            console.log(error);
+            res.status(400).json({message: error});
+        });
+    };
     })
 
-    exports.router = router;
+exports.router = router;
