@@ -3,7 +3,7 @@ const router = express.Router();
 const teamsHttpHandler = require('./teams.http');
 
 router.route('/')
-    .get(teamsHttpHandler.getgetTeamOfUser)
+    .get(teamsHttpHandler.getTeamOfUser)
     .put(teamsHttpHandler.setTeamToUser)
 
 router.route('/pokemons')

@@ -1,6 +1,6 @@
 const express = require("express");
-const bodyParser = require('body-parser');
 const middlewares = require('./middlewares');
+require('./database');
 
 // Routes
 const authRoutes = require('./auth/auth.router').router;
@@ -11,6 +11,7 @@ const app = express();
 const port = 3000;
 
 middlewares.setupMiddlewares(app);
+
 app.get("/", (req, res) => {
     // req es la request, la peticion
     // res es la response, la respuesta

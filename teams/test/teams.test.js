@@ -13,9 +13,8 @@ before((done) => {
     done();
 });
 
-afterEach ((done) => {
-    teamsController.cleanUpTeam();
-    done();
+afterEach (async() => {
+    await teamsController.cleanUpTeam()
 });
 
 describe('Suite de pruebas teams', () => {
@@ -98,7 +97,6 @@ describe('Suite de pruebas teams', () => {
             .set('content-type', 'application/json')
             .send({user: 'Lucho', password: '1234'})
             .end((err, res) => {
-                console.log("ESTE ES EL ACTUAL NUMERO DE POKEMONS ", team.length);
                 let token = res.body.token;
                 //Expect valid login
                 chai.assert.equal(res.statusCode, 200);
@@ -116,8 +114,6 @@ describe('Suite de pruebas teams', () => {
                                     .get('/teams')
                                     .set('Authorization', `JWT ${token}`)
                                     .end((err, res) => {
-                                        console.log(res.body.team);
-                                        console.log("ESTE ES EL NUEVO NUMERO DE POKEMONS ", res.body.team.length);
                                         // tiene equipo con Charizard y Blastoise
                                         // { trainer: 'mastermind', team: [Pokemon]}
                                         chai.assert.equal(res.statusCode, 200);
@@ -125,6 +121,41 @@ describe('Suite de pruebas teams', () => {
                                         chai.assert.equal(res.body.team.length, team.length - 1);
                                         done();
                                     });
+                            });
+                    });
+            });
+    });
+    it('should not be able to add pokemons if you have already six', (done) => {
+        // Cuando la llamada no tiene correctamente la llave
+        let team = [
+            {name: 'Charizard'}, 
+            {name: 'Blastoise'}, 
+            {name: 'Bulbasaur'}, 
+            {name: 'Pikachu'},
+            {name: 'Bulbasaur'}, 
+            {name: 'Pikachu'}
+        ];
+        chai.request(app)
+            .post('/auth/login')
+            .set('content-type', 'application/json')
+            .send({user: 'Lucho', password: '1234'})
+            .end((err, res) => {
+                let token = res.body.token;
+                //Expect valid login
+                chai.assert.equal(res.statusCode, 200);
+                chai.request(app)
+                    .put('/teams')
+                    .send({team: team})
+                    .set('Authorization', `JWT ${token}`)
+                    .end((err, res) => {
+                        chai.request(app)
+                            // DESDE AQUI HAY QUE IMPLEMENTAR EL TEST DEL DELETE
+                            .post('/teams/pokemons')
+                            .send({name: 'Ditto'})
+                            .set('Authorization', `JWT ${token}`)
+                            .end((err, res) => {
+                                chai.assert.equal(res.statusCode, 400);
+                                done();
                             });
                     });
             });
