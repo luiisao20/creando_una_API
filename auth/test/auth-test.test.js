@@ -5,16 +5,16 @@ const chaiHttp = require("chai-http");
 
 chai.use(chaiHttp);
 const usersController = require('../users.controller')
+const teamsController = require('../../teams/teams.controller')
 const app = require("../../app").app;
 
-before((done) => {
-    usersController.registerUser("Lucho", "1234");
-    done();
+beforeEach(async() => {
+    await usersController.registerUser("Lucho", "1234");
 })
 
-after((done) => {
-    usersController.cleanUpUsers();
-    done();
+afterEach(async() => {
+    await usersController.cleanUpUsers();
+    await teamsController.cleanUpTeam();
 })
 
 describe("Suite de pruebas auth", () => {
@@ -84,5 +84,5 @@ describe("Suite de pruebas auth", () => {
                 done()
             });
     });
-    
+
 });
