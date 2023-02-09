@@ -12,4 +12,4 @@ mongoose.connect(`mongodb+srv://luiisao20:${password}@cluster0.amdr2tw.mongodb.n
 const Cat = mongoose.model('Cat', { name: String });
 
 const kitty = new Cat({ name: 'Licenciado' });
-kitty.save().then(() => console.log('meow'));
+kitty.save();
